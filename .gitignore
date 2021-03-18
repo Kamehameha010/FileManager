@@ -1,1 +1,5 @@
 django.rar
+__pycache__/
+src/vscode
+text1.txt
+log_a.log

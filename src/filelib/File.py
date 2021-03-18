@@ -1,3 +1,6 @@
+__all__ = ["copy_files", "get_files", "search_file"]
+
+
 from os.path import isfile, join
 from pathlib import Path
 from shutil import Error
@@ -35,7 +38,7 @@ def search_file(*file_extension, filename: str = None, directory: Path = Path.cw
         regex = re.compile(fr".?{filename}.*\.({ext})$", re.IGNORECASE)
 
         for file in directory.rglob("*.*"):
-           
+
             if regex.search(file.name):
                 yield file
 
@@ -45,7 +48,8 @@ def path_is_valid(path: str) -> bool:
 
 
 def get_files(*file_extension, **kwargs) -> queue.Queue:
-    list_files = queue.Queue()
+    from multiprocessing import JoinableQueue
+    list_files = JoinableQueue()
 
     for file in search_file(*file_extension, **kwargs):
         print(file)
@@ -53,7 +57,7 @@ def get_files(*file_extension, **kwargs) -> queue.Queue:
     return list_files
 
 
-def copy_files(src: str, dst: Path):
+def copy_files(src: str, dst: Path) -> None:
     import shutil
     if not dst.exists():
         dst.mkdir()
@@ -63,3 +67,7 @@ def copy_files(src: str, dst: Path):
         logging.error(e)
     except Error as e:
         logging.error(e)
+
+
+if __name__ == "__main__":
+    get_files("rar","part","zip","pdf",filename="Gui",directory=Path(r"E:\Mipony"))
