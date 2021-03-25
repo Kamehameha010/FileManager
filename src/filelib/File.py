@@ -50,9 +50,8 @@ def path_is_valid(path: str) -> bool:
 def get_files(*file_extension, **kwargs) -> queue.Queue:
     from multiprocessing import JoinableQueue
     list_files = JoinableQueue()
-
+    print(file_extension)
     for file in search_file(*file_extension, **kwargs):
-        print(file)
         list_files.put(file)
     return list_files
 
